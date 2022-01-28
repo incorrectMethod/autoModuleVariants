@@ -1,5 +1,4 @@
 /*
- 
   MechLabs AutomotiveLEDMod Functional Program
 
   Reads binary signal from comparator circuit.
@@ -24,10 +23,21 @@
       
   Serial output for debug only.
 
-  Last changed 27 09 2020
+  Hardware Connections Left to Right
+    Blade 1 > 12V Supply High Current
+    Blade 2 > 12V Ignition signal
+    Blade 3 > 0V Ground High Current
+    Blade 4 > Park lights signal
+    Blade 5 > J2 Output Indicator signal
+    Blade 6 > J4 Output Indicator signal
+    Blade 7 > Brake light signal
+    3Pin J2 > Output | 5V | Data | 0V | High current
+    3Pin J4 > Output | 5V | Data | 0V | High current
+    
+  Last edit 28 01 2022
   by DJPriaulx
-
 */
+
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
   #include <avr/power.h>
@@ -53,6 +63,7 @@
 #define F05 25                            // +32
 #define F06 26                            // Front (on), Rear (off)
 #define F07 27                            // Debug
+/* F08 is hardware selection for ignition enable or Vin enable */
 
 #define dataLHS 5                         // Data output pin
 #define dataRHS 4                         // Data output pin
@@ -90,9 +101,10 @@ uint32_t colRed = stripLHS.Color(255, 0, 0);
 uint32_t colRedDim = stripLHS.Color(40, 0, 0);
 uint32_t colAmber = stripLHS.Color(255, 191, 0);
 uint32_t colWhite = stripLHS.Color(255, 255, 255);
-uint32_t colPark = stripLHS.Color(0, 0, 0);
 uint32_t colPurple = stripLHS.Color(204, 153, 255);
 uint32_t colNone = stripLHS.Color(0, 0, 0);
+
+uint32_t colPark = stripLHS.Color(0, 0, 0); // Variable colour holder
 
 
 void setup() {
